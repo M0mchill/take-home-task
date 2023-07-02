@@ -70,6 +70,6 @@ tbody tr {
   cursor: pointer;
 }
 tbody tr.selected {
-  background-color: #ccc; 
+  background-color: #ccc; /* Choose your own color for selected row */
 }
 </style>
