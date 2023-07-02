@@ -10,7 +10,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="app in apps" :key="app.name" @click="selectApp(app)">
+            <tr 
+              v-for="app in apps" 
+              :key="app.name" 
+              @click="selectApp(app)" 
+              :class="{ selected: selectedApp === app }">
               <td>{{ app.title }}</td>
               <td>{{ app.userCount }}</td>
             </tr>
@@ -21,14 +25,24 @@
 
     <v-card outlined shaped class="flex-grow-1 mr-2">
       <div class="pa-2">App details</div>
+      <div v-if="appDetails">Name: {{ appDetails.name }}</div>
+      <!-- Display other app details as required -->
     </v-card>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
+  data() {
+    return {
+      selectedApp: null,
+      appDetails: null,
+    }
+  },
+
   mounted() {
     this.$store.dispatch('Apps/loadApps')
   },
@@ -38,8 +52,14 @@ export default {
   },
 
   methods: {
-    selectApp(app) {
-      // TODO: Show this app in the box on the right
+    async selectApp(app) {
+      this.selectedApp = app
+      try {
+        const response = await axios.get(`/api/apps/${app.key}`)
+        this.appDetails = response.data
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }
@@ -48,5 +68,8 @@ export default {
 <style scoped>
 tbody tr {
   cursor: pointer;
+}
+tbody tr.selected {
+  background-color: #ccc; 
 }
 </style>
