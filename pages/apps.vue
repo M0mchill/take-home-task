@@ -26,9 +26,16 @@
     <v-card outlined shaped class="flex-grow-1 mr-2">
       <div class="pa-2">App details</div>
       <div v-if="appDetails">Description: {{ appDetails.description }}</div>
-      <div v-if="appDetails">Users: {{ appDetails.totalUsers }} out of {{appDetails.userLimit}}</div>
-      <div v-if="appDetails">Usage: {{ appDetails.usage }} out of {{ appDetails.usageLimit }}</div>
-      
+      <div v-if="appDetails">
+        <p :class='usersClass'>
+          Users: {{ appDetails.totalUsers }} out of {{appDetails.userLimit}}
+        </p>
+      </div>
+      <div v-if="appDetails">
+        <p :class='usageClass'>
+        Usage: {{ appDetails.usage }} out of {{ appDetails.usageLimit }}
+        </p>
+      </div> 
     </v-card>
   </div>
 </template>
@@ -50,8 +57,39 @@ export default {
   },
 
   computed: {
-    ...mapState('Apps', ['apps'])
+    ...mapState('Apps', ['apps']),
+    
+    usageClass() {
+      if (this.appDetails && this.appDetails.usageLimit !== 0) {
+        let usageRatio = this.appDetails.usage/this.appDetails.usageLimit*100;
+        if (usageRatio > 75) {
+          return 'red';
+        } else if (usageRatio > 50) {
+          return 'yellow';
+        } else {
+          return 'green';
+        }
+      } else {
+        return '';
+      }
+    },
+
+    usersClass() {
+      if (this.appDetails && this.appDetails.userLimit !== 0) {
+        let usersRatio =  this.appDetails.totalUsers/this.appDetails.userLimit*100 ;
+        if (usersRatio >= 75) {
+          return 'red';
+        } else if (usersRatio >= 50) {
+          return 'yellow';
+        } else {
+          return 'green';
+        }
+      } else {
+        return '';
+      }
+    }
   },
+
 
   methods: {
     async selectApp(app) {
@@ -73,5 +111,14 @@ tbody tr {
 }
 tbody tr.selected {
   background-color: #ccc; /* Choose your own color for selected row */
+}
+p .red {
+  color:red
+}
+p .yellow {
+  color:yellow
+}
+p .green {
+  color:green
 }
 </style>
