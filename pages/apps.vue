@@ -25,8 +25,10 @@
 
     <v-card outlined shaped class="flex-grow-1 mr-2">
       <div class="pa-2">App details</div>
-      <div v-if="appDetails">Name: {{ appDetails.name }}</div>
-      <!-- Display other app details as required -->
+      <div v-if="appDetails">Description: {{ appDetails.description }}</div>
+      <div v-if="appDetails">Users: {{ appDetails.totalUsers }} out of {{appDetails.userLimit}}</div>
+      <div v-if="appDetails">Usage: {{ appDetails.usage }} out of {{ appDetails.usageLimit }}</div>
+      
     </v-card>
   </div>
 </template>
@@ -55,8 +57,8 @@ export default {
     async selectApp(app) {
       this.selectedApp = app
       try {
-        const response = await axios.get(`/api/apps/${app.key}`)
-        this.appDetails = response.data
+        const response = await fetch(`http://localhost:5000/api/apps/${app.key}`,{method: 'GET'})
+        this.appDetails =  await response.json()
       } catch (error) {
         console.error(error)
       }
