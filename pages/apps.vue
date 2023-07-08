@@ -26,12 +26,12 @@
     <v-card outlined shaped class="flex-grow-1 mr-2">
       <div class="pa-2">App details</div>
       <div v-if="appDetails">Description: {{ appDetails.description }}</div>
-      <div v-if="appDetails">
-        <p :class='usersClass'>
+      <div v-if="appDetails" >
+        <p :class='usersClass' >
           Users: {{ appDetails.totalUsers }} out of {{appDetails.userLimit}}
         </p>
       </div>
-      <div v-if="appDetails">
+      <div v-if="appDetails" >
         <p :class='usageClass'>
         Usage: {{ appDetails.usage }} out of {{ appDetails.usageLimit }}
         </p>
@@ -112,13 +112,25 @@ tbody tr {
 tbody tr.selected {
   background-color: #ccc; /* Choose your own color for selected row */
 }
-p .red {
+p.red {
   color:red
 }
-p .yellow {
+p.yellow {
   color:yellow
 }
-p .green {
+p.green {
   color:green
 }
+
+body .v-application .red {
+  background-color: transparent !important;
+}
+body .v-application .yellow {
+  background-color: transparent !important;
+}
+body .v-application .green {
+  background-color: transparent !important;
+}
+
+
 </style>
